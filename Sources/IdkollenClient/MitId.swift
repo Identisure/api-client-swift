@@ -157,6 +157,31 @@ public final class MitIdEndpoint {
         try await poll({ try await self.authStatus(id: id) }, opts: opts)
     }
 
+    public func ageVerification(_ req: AgeVerificationRequest) async throws -> AgeVerificationStatus {
+        try await transport.post("/v3/mitid/age-verification", body: req)
+    }
+
+    public func ageVerificationStatus(id: String) async throws -> AgeVerificationStatus {
+        try await transport.get("/v3/mitid/age-verification/\(id)")
+    }
+
+    public func cancelAgeVerification(id: String) async throws {
+        try await transport.delete("/v3/mitid/age-verification/\(id)")
+    }
+
+    public func waitForAgeVerification(id: String, opts: PollOptions = .init()) async throws -> AgeVerificationStatus {
+        let deadline = Date().addingTimeInterval(opts.timeout)
+        while true {
+            let status = try await ageVerificationStatus(id: id)
+            if case .pending = status {
+                if Date() >= deadline { throw WaitError(timeout: true) }
+                try await Task.sleep(nanoseconds: UInt64(opts.interval * 1_000_000_000))
+            } else {
+                return status
+            }
+        }
+    }
+
     public func waitForSign(id: String, opts: PollOptions = .init()) async throws -> MitIdStatus {
         try await poll({ try await self.signStatus(id: id) }, opts: opts)
     }
