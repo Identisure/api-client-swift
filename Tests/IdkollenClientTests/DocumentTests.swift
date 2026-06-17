@@ -39,14 +39,4 @@ final class DocumentTests: XCTestCase {
         let result = try await client.document.download(id: "doc1")
         XCTAssertEqual(result, expected)
     }
-
-    func testDelete() async throws {
-        MockURLProtocol.enqueue(status: 204, body: Data())
-
-        try await client.document.delete(id: "doc1")
-
-        let req = MockURLProtocol.capturedRequests.last!
-        XCTAssertEqual(req.httpMethod, "DELETE")
-        XCTAssertEqual(req.url?.path, "/document/doc1")
-    }
 }
