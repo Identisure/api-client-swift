@@ -86,7 +86,7 @@ public struct VippsPending: Decodable {
 public struct VippsCompleted: Decodable {
     public let id: String
     public let refId: String?
-    public let ssn: String
+    public let ssn: String?
     public let name: String
     public let givenName: String
     public let surname: String

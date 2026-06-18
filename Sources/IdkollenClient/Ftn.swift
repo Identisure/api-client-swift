@@ -55,7 +55,7 @@ public struct FtnPending: Decodable {
 public struct FtnCompleted: Decodable {
     public let id: String
     public let refId: String?
-    public let ssn: String
+    public let ssn: String?
     public let name: String
     public let givenName: String
     public let surname: String
