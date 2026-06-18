@@ -46,29 +46,17 @@ public struct BankIdNoSignRequest: Encodable {
     public let redirectUrl: String?
     public let text: String?
     public let documents: [String]?
-    public let requestSsn: Bool?
-    public let requestPhone: Bool?
-    public let requestEmail: Bool?
-    public let requestAddress: Bool?
     public let refId: String?
 
     public init(
         redirectUrl: String? = nil,
         text: String? = nil,
         documents: [String]? = nil,
-        requestSsn: Bool? = nil,
-        requestPhone: Bool? = nil,
-        requestEmail: Bool? = nil,
-        requestAddress: Bool? = nil,
         refId: String? = nil
     ) {
         self.redirectUrl = redirectUrl
         self.text = text
         self.documents = documents
-        self.requestSsn = requestSsn
-        self.requestPhone = requestPhone
-        self.requestEmail = requestEmail
-        self.requestAddress = requestAddress
         self.refId = refId
     }
 }
