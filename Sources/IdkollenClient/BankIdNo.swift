@@ -177,11 +177,11 @@ public final class BankIdNoEndpoint {
     }
 
     public func waitForAgeVerification(id: String, opts: PollOptions = .init()) async throws -> AgeVerificationStatus {
-        let deadline = Date().addingTimeInterval(opts.timeout)
+        let deadline = DispatchTime.now() + opts.timeout
         while true {
             let status = try await ageVerificationStatus(id: id)
             if case .pending = status {
-                if Date() >= deadline { throw WaitError(timeout: true) }
+                if DispatchTime.now() >= deadline { throw WaitError(timeout: true) }
                 try await Task.sleep(nanoseconds: UInt64(opts.interval * 1_000_000_000))
             } else {
                 return status
@@ -194,11 +194,11 @@ public final class BankIdNoEndpoint {
     }
 
     private func poll(_ fn: @escaping () async throws -> BankIdNoStatus, opts: PollOptions) async throws -> BankIdNoStatus {
-        let deadline = Date().addingTimeInterval(opts.timeout)
+        let deadline = DispatchTime.now() + opts.timeout
         while true {
             let status = try await fn()
             if case .pending = status {
-                if Date() >= deadline { throw WaitError(timeout: true) }
+                if DispatchTime.now() >= deadline { throw WaitError(timeout: true) }
                 try await Task.sleep(nanoseconds: UInt64(opts.interval * 1_000_000_000))
             } else {
                 return status

@@ -127,11 +127,11 @@ public final class VippsEndpoint {
     }
 
     public func waitForAuth(id: String, opts: PollOptions = .init()) async throws -> VippsStatus {
-        let deadline = Date().addingTimeInterval(opts.timeout)
+        let deadline = DispatchTime.now() + opts.timeout
         while true {
             let status = try await authStatus(id: id)
             if case .pending = status {
-                if Date() >= deadline { throw WaitError(timeout: true) }
+                if DispatchTime.now() >= deadline { throw WaitError(timeout: true) }
                 try await Task.sleep(nanoseconds: UInt64(opts.interval * 1_000_000_000))
             } else {
                 return status
