@@ -70,12 +70,16 @@ internal final class Transport {
     private func send<T: Decodable>(_ req: URLRequest) async throws -> T {
         let (data, response) = try await runSession(req)
         try checkStatus(response: response, data: data)
-        if data.isEmpty {
-            // Caller asked for T but body is empty. Decode an empty object if T allows it,
-            // otherwise this throws — which is the right behaviour for non-optional T.
-            return try decoder.decode(T.self, from: Data("{}".utf8))
+        do {
+            if data.isEmpty {
+                // Caller asked for T but body is empty. Decode an empty object if T allows it,
+                // otherwise this throws — which is the right behaviour for non-optional T.
+                return try decoder.decode(T.self, from: Data("{}".utf8))
+            }
+            return try decoder.decode(T.self, from: data)
+        } catch {
+            throw IdkollenError(statusCode: 0, message: String(describing: error))
         }
-        return try decoder.decode(T.self, from: data)
     }
 
     private func runSession(_ req: URLRequest) async throws -> (Data, URLResponse) {
