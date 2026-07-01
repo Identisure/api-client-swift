@@ -19,38 +19,43 @@ internal final class Transport {
     }
 
     func post<T: Decodable, B: Encodable>(_ path: String, body: B) async throws -> T {
-        var req = buildRequest(method: "POST", path: path)
+        var req = try buildRequest(method: "POST", path: path)
         req.setValue("application/json", forHTTPHeaderField: "Content-Type")
         req.httpBody = try encoder.encode(body)
         return try await send(req)
     }
 
     func get<T: Decodable>(_ path: String) async throws -> T {
-        let req = buildRequest(method: "GET", path: path)
+        let req = try buildRequest(method: "GET", path: path)
         return try await send(req)
     }
 
     func getRaw(_ path: String) async throws -> Data {
-        let req = buildRequest(method: "GET", path: path)
+        let req = try buildRequest(method: "GET", path: path)
         let (data, response) = try await runSession(req)
         try checkStatus(response: response, data: data)
         return data
     }
 
     func delete(_ path: String) async throws {
-        let req = buildRequest(method: "DELETE", path: path)
+        let req = try buildRequest(method: "DELETE", path: path)
         let (data, response) = try await runSession(req)
         try checkStatus(response: response, data: data)
     }
 
     func postMultipart<T: Decodable>(_ path: String, data: Data, filename: String, mimeType: String) async throws -> T {
         let boundary = UUID().uuidString
-        var req = buildRequest(method: "POST", path: path)
+        var req = try buildRequest(method: "POST", path: path)
         req.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
 
         var body = Data()
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"file\"; filename=\"\(filename)\"\r\n".data(using: .utf8)!)
+        // WHATWG multipart/form-data encoding, as browsers do, so the quoted value stays intact.
+        let escapedFilename = filename
+            .replacingOccurrences(of: "\"", with: "%22")
+            .replacingOccurrences(of: "\r", with: "%0D")
+            .replacingOccurrences(of: "\n", with: "%0A")
+        body.append("Content-Disposition: form-data; name=\"file\"; filename=\"\(escapedFilename)\"\r\n".data(using: .utf8)!)
         body.append("Content-Type: \(mimeType)\r\n\r\n".data(using: .utf8)!)
         body.append(data)
         body.append("\r\n--\(boundary)--\r\n".data(using: .utf8)!)
@@ -59,8 +64,11 @@ internal final class Transport {
         return try await send(req)
     }
 
-    private func buildRequest(method: String, path: String) -> URLRequest {
-        var req = URLRequest(url: URL(string: baseUrl + path)!)
+    private func buildRequest(method: String, path: String) throws -> URLRequest {
+        guard let url = URL(string: baseUrl + path) else {
+            throw IdkollenError(statusCode: 0, message: "Invalid URL: \(baseUrl + path)")
+        }
+        var req = URLRequest(url: url)
         req.httpMethod = method
         req.setValue(authHeader, forHTTPHeaderField: "Authorization")
         req.setValue(Self.userAgent, forHTTPHeaderField: "User-Agent")
