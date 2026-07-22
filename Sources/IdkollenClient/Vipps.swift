@@ -96,6 +96,7 @@ public struct VippsCompleted: Decodable {
     public let birthDate: String?
     public let pid: String?
     public let bankId: String?
+    public let authenticatedAt: String?
 }
 
 public struct VippsFailed: Decodable {

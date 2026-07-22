@@ -111,6 +111,8 @@ public struct MitIdCompleted: Decodable {
     public let pid: String?
     public let bankId: String?
     public let signResult: MitIdSignResult?
+    public let authenticatedAt: String?
+    public let signedAt: String?
 }
 
 public struct MitIdFailed: Decodable {

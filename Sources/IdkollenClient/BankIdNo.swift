@@ -118,6 +118,8 @@ public struct BankIdNoCompleted: Decodable {
     public let bankId: String?
     public let signResult: BankIdNoSignResult?
     public let signedDocuments: [BankIdNoSignedDocument]?
+    public let authenticatedAt: String?
+    public let signedAt: String?
 }
 
 public struct BankIdNoFailed: Decodable {

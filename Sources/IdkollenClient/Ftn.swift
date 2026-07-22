@@ -65,6 +65,8 @@ public struct FtnCompleted: Decodable {
     public let birthDate: String?
     public let pid: String?
     public let bankId: String?
+    public let bankName: String?
+    public let authenticatedAt: String?
 }
 
 public struct FtnFailed: Decodable {

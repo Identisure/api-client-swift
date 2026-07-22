@@ -153,6 +153,8 @@ public struct FrejaCompleted: Decodable {
     public let surname: String
     public let address: String?
     public let companySignatoryText: String?
+    public let authenticatedAt: String?
+    public let signedAt: String?
 }
 
 public struct FrejaFailed: Decodable {

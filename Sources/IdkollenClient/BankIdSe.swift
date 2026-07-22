@@ -213,6 +213,8 @@ public struct BankIdSeCompleted: Decodable {
     public let certStartDate: String?
     public let address: String?
     public let companySignatoryText: String?
+    public let authenticatedAt: String?
+    public let signedAt: String?
 }
 
 public struct BankIdSeFailed: Decodable {
