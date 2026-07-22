@@ -37,6 +37,7 @@ final class BankIdSeTests: XCTestCase {
             "name": "Test User",
             "givenName": "Test",
             "surname": "User",
+            "ocspResponse": "MIIB",
         ])
 
         let result = try await client.bankIdSe.auth(BankIdSeAuthRequest())

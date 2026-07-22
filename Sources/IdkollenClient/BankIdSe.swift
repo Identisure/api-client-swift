@@ -211,10 +211,24 @@ public struct BankIdSeCompleted: Decodable {
     public let givenName: String
     public let surname: String
     public let certStartDate: String?
+    public let ocspResponse: String
+    public let risk: String?
+    public let device: BankIdSeDevice?
+    public let stepUp: BankIdSeStepUp?
     public let address: String?
     public let companySignatoryText: String?
     public let authenticatedAt: String?
     public let signedAt: String?
+}
+
+public struct BankIdSeDevice: Decodable {
+    public let ipAddress: String?
+    public let uhi: String?
+}
+
+public struct BankIdSeStepUp: Decodable {
+    public let mrtd: Bool?
+    public let face: Bool?
 }
 
 public struct BankIdSeFailed: Decodable {
