@@ -1,9 +1,12 @@
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 final class MockURLProtocol: URLProtocol {
-    nonisolated(unsafe) static var queue: [(status: Int, body: Data)] = []
-    nonisolated(unsafe) static var capturedRequests: [URLRequest] = []
-    nonisolated(unsafe) static var capturedBodies: [Data] = []
+    static var queue: [(status: Int, body: Data)] = []
+    static var capturedRequests: [URLRequest] = []
+    static var capturedBodies: [Data] = []
 
     static func enqueue(status: Int, body: Data) {
         queue.append((status: status, body: body))

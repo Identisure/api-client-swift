@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 internal final class Transport {
     private static let userAgent = "idkollen-client-swift/0.1.0"
@@ -94,6 +97,8 @@ internal final class Transport {
         do {
             return try await session.data(for: req)
         } catch {
+            // URLSession reports task cancellation as URLError(.cancelled); keep it a cancellation.
+            if Task.isCancelled { throw CancellationError() }
             throw IdkollenError(statusCode: 0, message: error.localizedDescription)
         }
     }

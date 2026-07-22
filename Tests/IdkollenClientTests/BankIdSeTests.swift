@@ -48,12 +48,12 @@ final class BankIdSeTests: XCTestCase {
         MockURLProtocol.enqueue(status: 200, json: [
             "status": "FAILED",
             "id": "abc",
-            "error": "userCancel",
+            "error": "CANCELLED",
         ])
 
         let result = try await client.bankIdSe.auth(BankIdSeAuthRequest())
         guard case .failed(let failed) = result else { return XCTFail("expected failed") }
-        XCTAssertEqual(failed.error, "userCancel")
+        XCTAssertEqual(failed.error, "CANCELLED")
     }
 
     func testPhoneAuthPending() async throws {
@@ -63,7 +63,7 @@ final class BankIdSeTests: XCTestCase {
             "hintCode": "outstandingTransaction",
         ])
 
-        let result = try await client.bankIdSe.phoneAuth(BankIdSePhoneAuthRequest(ssn: "199001011234", callInitiator: "user"))
+        let result = try await client.bankIdSe.phoneAuth(BankIdSePhoneAuthRequest(ssn: "199001011234", callInitiator: "USER"))
         guard case .pending = result else { return XCTFail("expected pending") }
     }
 
