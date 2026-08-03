@@ -13,10 +13,11 @@ let package = Package(
         .library(name: "IdkollenClient", targets: ["IdkollenClient"]),
     ],
     targets: [
-        .target(name: "IdkollenClient"),
+        .target(name: "IdkollenClient", path: "swift/Sources/IdkollenClient"),
         .testTarget(
             name: "IdkollenClientTests",
-            dependencies: ["IdkollenClient"]
+            dependencies: ["IdkollenClient"],
+            path: "swift/Tests/IdkollenClientTests"
         ),
     ]
 )
