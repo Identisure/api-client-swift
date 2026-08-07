@@ -120,6 +120,7 @@ public enum FrejaStatus: Decodable {
     case pending(FrejaPending)
     case completed(FrejaCompleted)
     case failed(FrejaFailed)
+    case unknown(String)
 
     private enum DiscriminatorKey: String, CodingKey { case status }
 
@@ -130,8 +131,7 @@ public enum FrejaStatus: Decodable {
         case "PENDING":   self = .pending(try FrejaPending(from: decoder))
         case "COMPLETED": self = .completed(try FrejaCompleted(from: decoder))
         case "FAILED":    self = .failed(try FrejaFailed(from: decoder))
-        default:
-            throw DecodingError.dataCorruptedError(forKey: .status, in: container, debugDescription: "Unknown freja status: \(status)")
+        default:          self = .unknown(status)
         }
     }
 }

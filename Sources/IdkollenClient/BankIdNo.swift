@@ -80,6 +80,7 @@ public enum BankIdNoStatus: Decodable {
     case pending(BankIdNoPending)
     case completed(BankIdNoCompleted)
     case failed(BankIdNoFailed)
+    case unknown(String)
 
     private enum DiscriminatorKey: String, CodingKey { case status }
 
@@ -90,8 +91,7 @@ public enum BankIdNoStatus: Decodable {
         case "PENDING":   self = .pending(try BankIdNoPending(from: decoder))
         case "COMPLETED": self = .completed(try BankIdNoCompleted(from: decoder))
         case "FAILED":    self = .failed(try BankIdNoFailed(from: decoder))
-        default:
-            throw DecodingError.dataCorruptedError(forKey: .status, in: container, debugDescription: "Unknown bankid-no status: \(status)")
+        default:          self = .unknown(status)
         }
     }
 }

@@ -61,6 +61,7 @@ public enum VippsStatus: Decodable {
     case pending(VippsPending)
     case completed(VippsCompleted)
     case failed(VippsFailed)
+    case unknown(String)
 
     private enum DiscriminatorKey: String, CodingKey { case status }
 
@@ -71,8 +72,7 @@ public enum VippsStatus: Decodable {
         case "PENDING":   self = .pending(try VippsPending(from: decoder))
         case "COMPLETED": self = .completed(try VippsCompleted(from: decoder))
         case "FAILED":    self = .failed(try VippsFailed(from: decoder))
-        default:
-            throw DecodingError.dataCorruptedError(forKey: .status, in: container, debugDescription: "Unknown vipps status: \(status)")
+        default:          self = .unknown(status)
         }
     }
 }

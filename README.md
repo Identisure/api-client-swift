@@ -48,7 +48,7 @@ if case .pending(let pending) = session {
         print("Authenticated: \(done.name) (\(done.ssn))")
     case .failed(let failed):
         print("Failed: \(failed.error)")
-    case .pending:
+    case .pending, .unknown:
         break
     }
 }

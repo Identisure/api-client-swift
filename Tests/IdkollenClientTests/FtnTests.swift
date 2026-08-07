@@ -26,6 +26,17 @@ final class FtnTests: XCTestCase {
         XCTAssertEqual(p.id, "abc")
     }
 
+    func testAuthUnknownStatus() async throws {
+        MockURLProtocol.enqueue(status: 200, json: [
+            "status": "SOMETHING_NEW",
+            "id": "abc",
+        ])
+
+        let result = try await client.ftn.authStatus(id: "abc")
+        guard case .unknown(let status) = result else { return XCTFail("expected unknown") }
+        XCTAssertEqual(status, "SOMETHING_NEW")
+    }
+
     func testAgeVerificationCompleted() async throws {
         MockURLProtocol.enqueue(status: 200, json: [
             "status": "COMPLETED",

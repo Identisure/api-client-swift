@@ -74,6 +74,7 @@ public enum MitIdStatus: Decodable {
     case pending(MitIdPending)
     case completed(MitIdCompleted)
     case failed(MitIdFailed)
+    case unknown(String)
 
     private enum DiscriminatorKey: String, CodingKey { case status }
 
@@ -84,8 +85,7 @@ public enum MitIdStatus: Decodable {
         case "PENDING":   self = .pending(try MitIdPending(from: decoder))
         case "COMPLETED": self = .completed(try MitIdCompleted(from: decoder))
         case "FAILED":    self = .failed(try MitIdFailed(from: decoder))
-        default:
-            throw DecodingError.dataCorruptedError(forKey: .status, in: container, debugDescription: "Unknown mitid status: \(status)")
+        default:          self = .unknown(status)
         }
     }
 }

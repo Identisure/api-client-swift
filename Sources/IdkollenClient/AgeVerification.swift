@@ -20,6 +20,7 @@ public enum AgeVerificationStatus: Decodable {
     case pending(AgeVerificationPending)
     case completed(AgeVerificationCompleted)
     case failed(AgeVerificationFailed)
+    case unknown(String)
 
     private enum DiscriminatorKey: String, CodingKey { case status }
 
@@ -30,8 +31,7 @@ public enum AgeVerificationStatus: Decodable {
         case "PENDING":   self = .pending(try AgeVerificationPending(from: decoder))
         case "COMPLETED": self = .completed(try AgeVerificationCompleted(from: decoder))
         case "FAILED":    self = .failed(try AgeVerificationFailed(from: decoder))
-        default:
-            throw DecodingError.dataCorruptedError(forKey: .status, in: container, debugDescription: "Unknown age verification status: \(status)")
+        default:          self = .unknown(status)
         }
     }
 }

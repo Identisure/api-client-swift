@@ -152,6 +152,7 @@ public enum BankIdSeStatus: Decodable {
     case pending(BankIdSePending)
     case completed(BankIdSeCompleted)
     case failed(BankIdSeFailed)
+    case unknown(String)
 
     private enum DiscriminatorKey: String, CodingKey { case status }
 
@@ -162,8 +163,7 @@ public enum BankIdSeStatus: Decodable {
         case "PENDING":   self = .pending(try BankIdSePending(from: decoder))
         case "COMPLETED": self = .completed(try BankIdSeCompleted(from: decoder))
         case "FAILED":    self = .failed(try BankIdSeFailed(from: decoder))
-        default:
-            throw DecodingError.dataCorruptedError(forKey: .status, in: container, debugDescription: "Unknown bankid-se status: \(status)")
+        default:          self = .unknown(status)
         }
     }
 }
@@ -172,6 +172,7 @@ public enum BankIdSePhoneStatus: Decodable {
     case pending(BankIdSePendingPhone)
     case completed(BankIdSeCompleted)
     case failed(BankIdSeFailed)
+    case unknown(String)
 
     private enum DiscriminatorKey: String, CodingKey { case status }
 
@@ -182,8 +183,7 @@ public enum BankIdSePhoneStatus: Decodable {
         case "PENDING":   self = .pending(try BankIdSePendingPhone(from: decoder))
         case "COMPLETED": self = .completed(try BankIdSeCompleted(from: decoder))
         case "FAILED":    self = .failed(try BankIdSeFailed(from: decoder))
-        default:
-            throw DecodingError.dataCorruptedError(forKey: .status, in: container, debugDescription: "Unknown bankid-se phone status: \(status)")
+        default:          self = .unknown(status)
         }
     }
 }

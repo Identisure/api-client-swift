@@ -30,6 +30,7 @@ public enum FtnStatus: Decodable {
     case pending(FtnPending)
     case completed(FtnCompleted)
     case failed(FtnFailed)
+    case unknown(String)
 
     private enum DiscriminatorKey: String, CodingKey { case status }
 
@@ -40,8 +41,7 @@ public enum FtnStatus: Decodable {
         case "PENDING":   self = .pending(try FtnPending(from: decoder))
         case "COMPLETED": self = .completed(try FtnCompleted(from: decoder))
         case "FAILED":    self = .failed(try FtnFailed(from: decoder))
-        default:
-            throw DecodingError.dataCorruptedError(forKey: .status, in: container, debugDescription: "Unknown ftn status: \(status)")
+        default:          self = .unknown(status)
         }
     }
 }
