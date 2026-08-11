@@ -54,6 +54,14 @@ if case .pending(let pending) = session {
 }
 ```
 
+### Verifying callbacks
+
+Verify the `X-Signature-SHA256` header against the raw request body before parsing it:
+
+```swift
+let valid = CallbackSignature.verify(body: rawBody, signature: signatureHeader, secret: "hmac_secret")
+```
+
 ## Development
 
 ### Prerequisites

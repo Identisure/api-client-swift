@@ -12,8 +12,17 @@ let package = Package(
     products: [
         .library(name: "IdkollenClient", targets: ["IdkollenClient"]),
     ],
+    dependencies: [
+        .package(url: "https://github.com/apple/swift-crypto.git", "3.0.0"..<"6.0.0"),
+    ],
     targets: [
-        .target(name: "IdkollenClient", path: "swift/Sources/IdkollenClient"),
+        .target(
+            name: "IdkollenClient",
+            dependencies: [
+                .product(name: "Crypto", package: "swift-crypto", condition: .when(platforms: [.linux])),
+            ],
+            path: "swift/Sources/IdkollenClient"
+        ),
         .testTarget(
             name: "IdkollenClientTests",
             dependencies: ["IdkollenClient"],
