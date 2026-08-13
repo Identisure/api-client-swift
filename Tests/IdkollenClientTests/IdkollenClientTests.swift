@@ -18,7 +18,7 @@ final class IdkollenClientTests: XCTestCase {
     func testTransportAttachesBasicAuthAndUserAgent() async throws {
         MockURLProtocol.enqueue(status: 200, json: ["ok": true])
         let session = URLSession.mocked()
-        let transport = Transport(session: session, baseUrl: "https://example.test", clientId: "cid", clientSecret: "sec")
+        let transport = Transport(session: session, baseUrl: "https://example.test", clientId: "cid", clientSecret: "sec", timeout: 30)
 
         struct Reply: Decodable { let ok: Bool }
         let _: Reply = try await transport.get("/v3/ping")
@@ -33,7 +33,7 @@ final class IdkollenClientTests: XCTestCase {
     func testNon2xxThrowsIdkollenError() async {
         MockURLProtocol.enqueue(status: 400, json: ["message": "bad request"])
         let session = URLSession.mocked()
-        let transport = Transport(session: session, baseUrl: "https://x.test", clientId: "a", clientSecret: "b")
+        let transport = Transport(session: session, baseUrl: "https://x.test", clientId: "a", clientSecret: "b", timeout: 30)
 
         do {
             struct Reply: Decodable {}
@@ -45,5 +45,18 @@ final class IdkollenClientTests: XCTestCase {
         } catch {
             XCTFail("Unexpected error: \(error)")
         }
+    }
+
+    func testBuilderTimeoutAppliesToRequests() async throws {
+        MockURLProtocol.enqueue(status: 200, json: ["status": "PENDING", "id": "abc", "autoStartToken": "t"])
+        let client = IdkollenClientBuilder(clientId: "id", clientSecret: "secret")
+            .baseUrl("https://x.test")
+            .urlSession(.mocked())
+            .timeout(5)
+            .build()
+
+        _ = try? await client.ftn.authStatus(id: "abc")
+
+        XCTAssertEqual(MockURLProtocol.capturedRequests.last?.timeoutInterval, 5)
     }
 }

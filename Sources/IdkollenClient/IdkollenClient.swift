@@ -29,6 +29,7 @@ public final class IdkollenClientBuilder {
     private var env: Environment = .production
     private var customBaseUrl: String?
     private var customSession: URLSession?
+    private var requestTimeout: TimeInterval = 30
 
     public init(clientId: String, clientSecret: String) {
         self.clientId = clientId
@@ -53,10 +54,18 @@ public final class IdkollenClientBuilder {
         return self
     }
 
+    /// Timeout in seconds for each HTTP request. Defaults to 30. Must be positive.
+    @discardableResult
+    public func timeout(_ seconds: TimeInterval) -> Self {
+        precondition(seconds > 0, "Timeout must be positive")
+        self.requestTimeout = seconds
+        return self
+    }
+
     public func build() -> IdkollenClient {
         let session = customSession ?? URLSession.shared
         let baseUrl = customBaseUrl ?? env.baseUrl
-        let transport = Transport(session: session, baseUrl: baseUrl, clientId: clientId, clientSecret: clientSecret)
+        let transport = Transport(session: session, baseUrl: baseUrl, clientId: clientId, clientSecret: clientSecret, timeout: requestTimeout)
         return IdkollenClient(transport: transport)
     }
 }

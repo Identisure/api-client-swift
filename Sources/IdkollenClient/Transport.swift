@@ -9,14 +9,16 @@ internal final class Transport {
     private let session: URLSession
     private let baseUrl: String
     private let authHeader: String
+    private let timeout: TimeInterval
     let encoder: JSONEncoder
     let decoder: JSONDecoder
 
-    init(session: URLSession, baseUrl: String, clientId: String, clientSecret: String) {
+    init(session: URLSession, baseUrl: String, clientId: String, clientSecret: String, timeout: TimeInterval) {
         self.session = session
         self.baseUrl = baseUrl.hasSuffix("/") ? String(baseUrl.dropLast()) : baseUrl
         let creds = Data("\(clientId):\(clientSecret)".utf8).base64EncodedString()
         self.authHeader = "Basic \(creds)"
+        self.timeout = timeout
         self.encoder = JSONEncoder()
         self.decoder = JSONDecoder()
     }
@@ -71,7 +73,7 @@ internal final class Transport {
         guard let url = URL(string: baseUrl + path) else {
             throw IdkollenError(statusCode: 0, message: "Invalid URL: \(baseUrl + path)")
         }
-        var req = URLRequest(url: url)
+        var req = URLRequest(url: url, timeoutInterval: timeout)
         req.httpMethod = method
         req.setValue(authHeader, forHTTPHeaderField: "Authorization")
         req.setValue(Self.userAgent, forHTTPHeaderField: "User-Agent")
