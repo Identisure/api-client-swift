@@ -7,7 +7,6 @@ final class FixtureTests: XCTestCase {
         .deletingLastPathComponent()
         .deletingLastPathComponent()
         .deletingLastPathComponent()
-        .deletingLastPathComponent()
         .appendingPathComponent("fixtures")
 
     private let fastPoll = PollOptions(interval: 0.001)

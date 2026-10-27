@@ -20,13 +20,11 @@ let package = Package(
             name: "IdentisureClient",
             dependencies: [
                 .product(name: "Crypto", package: "swift-crypto", condition: .when(platforms: [.linux]))
-            ],
-            path: "swift/Sources/IdentisureClient"
+            ]
         ),
         .testTarget(
             name: "IdentisureClientTests",
-            dependencies: ["IdentisureClient"],
-            path: "swift/Tests/IdentisureClientTests"
+            dependencies: ["IdentisureClient"]
         ),
     ]
 )

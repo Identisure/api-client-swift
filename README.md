@@ -1,4 +1,4 @@
-<img align="left" height="100" style="margin-right: 10px;" src="../img/icon.png">
+<img align="left" height="100" style="margin-right: 10px;" src="img/icon.png">
 
 # Identisure Swift Client
 
@@ -20,11 +20,11 @@ Add to `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/identisure/idk-clients.git", from: "0.1.0")
+    .package(url: "https://github.com/identisure/api-client-swift.git", from: "0.1.0")
 ],
 targets: [
     .target(name: "MyApp", dependencies: [
-        .product(name: "IdentisureClient", package: "idk-clients")
+        .product(name: "IdentisureClient", package: "api-client-swift")
     ])
 ]
 ```
@@ -67,6 +67,10 @@ let valid = CallbackSignature.verify(body: rawBody, signature: signatureHeader, 
 ### Prerequisites
 
 - Swift 5.9+ (`swift --version`)
+
+### Setup
+
+Test fixtures live in a git submodule. Clone with `--recurse-submodules`, or run `git submodule update --init` in an existing clone.
 
 ### Build / Test
 
