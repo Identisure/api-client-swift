@@ -1,7 +1,7 @@
 import XCTest
-@testable import IdkollenClient
+@testable import IdentisureClient
 
-final class IdkollenClientTests: XCTestCase {
+final class IdentisureClientTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
@@ -9,7 +9,7 @@ final class IdkollenClientTests: XCTestCase {
     }
 
     func testBuilderProducesClient() {
-        let client = IdkollenClientBuilder(clientId: "id", clientSecret: "secret")
+        let client = IdentisureClientBuilder(clientId: "id", clientSecret: "secret")
             .environment(.staging)
             .build()
         XCTAssertNotNil(client.bankIdSe)
@@ -26,11 +26,11 @@ final class IdkollenClientTests: XCTestCase {
         let req = MockURLProtocol.capturedRequests.last!
         let expected = "Basic " + Data("cid:sec".utf8).base64EncodedString()
         XCTAssertEqual(req.value(forHTTPHeaderField: "Authorization"), expected)
-        XCTAssertTrue(req.value(forHTTPHeaderField: "User-Agent")?.contains("idkollen-client-swift/") ?? false)
+        XCTAssertTrue(req.value(forHTTPHeaderField: "User-Agent")?.contains("identisure-client-swift/") ?? false)
         XCTAssertEqual(req.url?.absoluteString, "https://example.test/v3/ping")
     }
 
-    func testNon2xxThrowsIdkollenError() async {
+    func testNon2xxThrowsIdentisureError() async {
         MockURLProtocol.enqueue(status: 400, json: ["message": "bad request"])
         let session = URLSession.mocked()
         let transport = Transport(session: session, baseUrl: "https://x.test", clientId: "a", clientSecret: "b", timeout: 30)
@@ -39,7 +39,7 @@ final class IdkollenClientTests: XCTestCase {
             struct Reply: Decodable {}
             let _: Reply = try await transport.post("/v3/things", body: ["a": 1])
             XCTFail("Expected throw")
-        } catch let error as IdkollenError {
+        } catch let error as IdentisureError {
             XCTAssertEqual(error.statusCode, 400)
             XCTAssertEqual(error.message, "bad request")
         } catch {
@@ -49,7 +49,7 @@ final class IdkollenClientTests: XCTestCase {
 
     func testBuilderTimeoutAppliesToRequests() async throws {
         MockURLProtocol.enqueue(status: 200, json: ["status": "PENDING", "id": "abc", "autoStartToken": "t"])
-        let client = IdkollenClientBuilder(clientId: "id", clientSecret: "secret")
+        let client = IdentisureClientBuilder(clientId: "id", clientSecret: "secret")
             .baseUrl("https://x.test")
             .urlSession(.mocked())
             .timeout(5)

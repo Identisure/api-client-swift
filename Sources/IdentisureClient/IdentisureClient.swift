@@ -3,7 +3,7 @@ import Foundation
 import FoundationNetworking
 #endif
 
-public final class IdkollenClient {
+public final class IdentisureClient {
     public let bankIdSe: BankIdSeEndpoint
     public let bankIdNo: BankIdNoEndpoint
     public let freja: FrejaEndpoint
@@ -23,7 +23,7 @@ public final class IdkollenClient {
     }
 }
 
-public final class IdkollenClientBuilder {
+public final class IdentisureClientBuilder {
     private let clientId: String
     private let clientSecret: String
     private var env: Environment = .production
@@ -62,10 +62,10 @@ public final class IdkollenClientBuilder {
         return self
     }
 
-    public func build() -> IdkollenClient {
+    public func build() -> IdentisureClient {
         let session = customSession ?? URLSession.shared
         let baseUrl = customBaseUrl ?? env.baseUrl
         let transport = Transport(session: session, baseUrl: baseUrl, clientId: clientId, clientSecret: clientSecret, timeout: requestTimeout)
-        return IdkollenClient(transport: transport)
+        return IdentisureClient(transport: transport)
     }
 }

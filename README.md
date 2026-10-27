@@ -1,6 +1,6 @@
 <img align="left" height="100" style="margin-right: 10px;" src="../img/icon.png">
 
-# IDkollen Swift Client
+# Identisure Swift Client
 
 [![Swift Package Manager][spm-image]][spm-url]
 [![MIT license][license-image]][license-url]
@@ -10,7 +10,7 @@
 [license-image]: https://img.shields.io/badge/license-MIT-blue?style=flat-square
 [license-url]: https://opensource.org/license/mit
 
-API client for the [IDkollen](https://developers.idkollen.se) REST API.
+API client for the [Identisure](https://developers.identisure.com) REST API.
 
 Supports iOS 15+, macOS 12+, tvOS 15+, watchOS 8+.
 
@@ -20,11 +20,11 @@ Add to `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/idkollen/idk-clients.git", from: "0.1.0")
+    .package(url: "https://github.com/identisure/idk-clients.git", from: "0.1.0")
 ],
 targets: [
     .target(name: "MyApp", dependencies: [
-        .product(name: "IdkollenClient", package: "idk-clients")
+        .product(name: "IdentisureClient", package: "idk-clients")
     ])
 ]
 ```
@@ -32,9 +32,9 @@ targets: [
 ## Usage
 
 ```swift
-import IdkollenClient
+import IdentisureClient
 
-let client = IdkollenClientBuilder(clientId: "client_id", clientSecret: "client_secret")
+let client = IdentisureClientBuilder(clientId: "client_id", clientSecret: "client_secret")
     .environment(.staging)
     .build()
 

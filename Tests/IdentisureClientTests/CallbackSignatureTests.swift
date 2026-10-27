@@ -1,5 +1,5 @@
 import XCTest
-@testable import IdkollenClient
+@testable import IdentisureClient
 
 final class CallbackSignatureTests: XCTestCase {
     let secret = "test-secret"

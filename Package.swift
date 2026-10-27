@@ -2,7 +2,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "IdkollenClient",
+    name: "IdentisureClient",
     platforms: [
         .iOS(.v15),
         .macOS(.v12),
@@ -10,23 +10,23 @@ let package = Package(
         .watchOS(.v8),
     ],
     products: [
-        .library(name: "IdkollenClient", targets: ["IdkollenClient"]),
+        .library(name: "IdentisureClient", targets: ["IdentisureClient"]),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-crypto.git", "3.0.0"..<"6.0.0"),
     ],
     targets: [
         .target(
-            name: "IdkollenClient",
+            name: "IdentisureClient",
             dependencies: [
                 .product(name: "Crypto", package: "swift-crypto", condition: .when(platforms: [.linux])),
             ],
-            path: "swift/Sources/IdkollenClient"
+            path: "swift/Sources/IdentisureClient"
         ),
         .testTarget(
-            name: "IdkollenClientTests",
-            dependencies: ["IdkollenClient"],
-            path: "swift/Tests/IdkollenClientTests"
+            name: "IdentisureClientTests",
+            dependencies: ["IdentisureClient"],
+            path: "swift/Tests/IdentisureClientTests"
         ),
     ]
 )

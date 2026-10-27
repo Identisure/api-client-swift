@@ -1,6 +1,6 @@
 import Foundation
 
-public struct IdkollenError: Error, CustomStringConvertible {
+public struct IdentisureError: Error, CustomStringConvertible {
     public let statusCode: Int
     public let message: String
 
@@ -9,7 +9,7 @@ public struct IdkollenError: Error, CustomStringConvertible {
         self.message = message
     }
 
-    public var description: String { "IdkollenError(\(statusCode)): \(message)" }
+    public var description: String { "IdentisureError(\(statusCode)): \(message)" }
 }
 
 public struct WaitError: Error, CustomStringConvertible {

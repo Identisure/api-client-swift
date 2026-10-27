@@ -1,13 +1,13 @@
 import XCTest
-@testable import IdkollenClient
+@testable import IdentisureClient
 
 final class BankIdNoTests: XCTestCase {
-    var client: IdkollenClient!
+    var client: IdentisureClient!
 
     override func setUp() {
         super.setUp()
         MockURLProtocol.reset()
-        client = IdkollenClientBuilder(clientId: "cid", clientSecret: "sec")
+        client = IdentisureClientBuilder(clientId: "cid", clientSecret: "sec")
             .baseUrl("https://x.test")
             .urlSession(.mocked())
             .build()

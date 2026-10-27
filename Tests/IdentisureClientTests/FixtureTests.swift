@@ -1,5 +1,5 @@
 import XCTest
-@testable import IdkollenClient
+@testable import IdentisureClient
 
 final class FixtureTests: XCTestCase {
     private static let fixturesDir = URL(fileURLWithPath: #filePath)
@@ -10,12 +10,12 @@ final class FixtureTests: XCTestCase {
         .appendingPathComponent("fixtures")
 
     private let fastPoll = PollOptions(interval: 0.001)
-    var client: IdkollenClient!
+    var client: IdentisureClient!
 
     override func setUp() {
         super.setUp()
         MockURLProtocol.reset()
-        client = IdkollenClientBuilder(clientId: "cid", clientSecret: "sec")
+        client = IdentisureClientBuilder(clientId: "cid", clientSecret: "sec")
             .baseUrl("https://x.test")
             .urlSession(.mocked())
             .build()
@@ -327,7 +327,7 @@ final class FixtureTests: XCTestCase {
         do {
             _ = try await client.ftn.auth(FtnAuthRequest())
             XCTFail("Expected throw")
-        } catch let error as IdkollenError {
+        } catch let error as IdentisureError {
             XCTAssertEqual(error.statusCode, 400)
             XCTAssertTrue(error.message.contains("Invalid request"))
         }

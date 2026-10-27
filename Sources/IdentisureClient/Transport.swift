@@ -4,7 +4,7 @@ import FoundationNetworking
 #endif
 
 internal final class Transport {
-    private static let userAgent = "idkollen-client-swift/0.1.0"
+    private static let userAgent = "identisure-client-swift/0.1.0"
 
     private let session: URLSession
     private let baseUrl: String
@@ -71,7 +71,7 @@ internal final class Transport {
 
     private func buildRequest(method: String, path: String) throws -> URLRequest {
         guard let url = URL(string: baseUrl + path) else {
-            throw IdkollenError(statusCode: 0, message: "Invalid URL: \(baseUrl + path)")
+            throw IdentisureError(statusCode: 0, message: "Invalid URL: \(baseUrl + path)")
         }
         var req = URLRequest(url: url, timeoutInterval: timeout)
         req.httpMethod = method
@@ -91,7 +91,7 @@ internal final class Transport {
             }
             return try decoder.decode(T.self, from: data)
         } catch {
-            throw IdkollenError(statusCode: 0, message: String(describing: error))
+            throw IdentisureError(statusCode: 0, message: String(describing: error))
         }
     }
 
@@ -101,13 +101,13 @@ internal final class Transport {
         } catch {
             // URLSession reports task cancellation as URLError(.cancelled); keep it a cancellation.
             if Task.isCancelled { throw CancellationError() }
-            throw IdkollenError(statusCode: 0, message: error.localizedDescription)
+            throw IdentisureError(statusCode: 0, message: error.localizedDescription)
         }
     }
 
     private func checkStatus(response: URLResponse, data: Data) throws {
         guard let http = response as? HTTPURLResponse else {
-            throw IdkollenError(statusCode: 0, message: "Non-HTTP response")
+            throw IdentisureError(statusCode: 0, message: "Non-HTTP response")
         }
         guard !(200..<300).contains(http.statusCode) else { return }
         let message: String
@@ -117,6 +117,6 @@ internal final class Transport {
         } else {
             message = String(data: data, encoding: .utf8) ?? ""
         }
-        throw IdkollenError(statusCode: http.statusCode, message: message)
+        throw IdentisureError(statusCode: http.statusCode, message: message)
     }
 }
