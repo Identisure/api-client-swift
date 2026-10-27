@@ -14,6 +14,20 @@ API client for the [Identisure](https://developers.identisure.com) REST API.
 
 Supports iOS 15+, macOS 12+, tvOS 15+, watchOS 8+.
 
+## Requirements
+
+Swift 5.9 or later. iOS 15, macOS 12, tvOS 15 or watchOS 8 and later.
+
+## Supported providers
+
+- **BankID SE**: auth, sign, phone auth and sign, QR verify, age verification
+- **BankID NO**: auth, backchannel auth, sign, age verification
+- **Freja eID**: auth, backchannel auth, sign, backchannel sign, age verification
+- **MitID**: auth, backchannel auth, sign, age verification
+- **FTN** (Finnish Trust Network): auth, age verification
+- **Vipps MobilePay**: auth, backchannel auth
+- **Documents**: upload and download documents for signing
+
 ## Installation
 
 Add to `Package.swift`:
@@ -78,3 +92,7 @@ Test fixtures live in a git submodule. Clone with `--recurse-submodules`, or run
 swift build
 swift test
 ```
+
+## Other languages
+
+[C#](https://github.com/identisure/api-client-csharp), [Dart](https://github.com/identisure/api-client-dart), [Go](https://github.com/identisure/api-client-go), [TypeScript/JavaScript](https://github.com/identisure/api-client-js), [Java/Kotlin](https://github.com/identisure/api-client-jvm), [PHP](https://github.com/identisure/api-client-php), [Python](https://github.com/identisure/api-client-py), [Ruby](https://github.com/identisure/api-client-ruby), [Rust](https://github.com/identisure/api-client-rust)
