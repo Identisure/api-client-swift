@@ -7,7 +7,10 @@ public struct AgeVerificationRequest: Encodable {
     public let callbackUrl: String?
     public let redirectUrl: String?
 
-    public init(minAge: Int? = nil, maxAge: Int? = nil, refId: String? = nil, callbackUrl: String? = nil, redirectUrl: String? = nil) {
+    public init(
+        minAge: Int? = nil, maxAge: Int? = nil, refId: String? = nil, callbackUrl: String? = nil,
+        redirectUrl: String? = nil
+    ) {
         self.minAge = minAge
         self.maxAge = maxAge
         self.refId = refId
@@ -28,10 +31,10 @@ public enum AgeVerificationStatus: Decodable {
         let container = try decoder.container(keyedBy: DiscriminatorKey.self)
         let status = try container.decode(String.self, forKey: .status)
         switch status {
-        case "PENDING":   self = .pending(try AgeVerificationPending(from: decoder))
+        case "PENDING": self = .pending(try AgeVerificationPending(from: decoder))
         case "COMPLETED": self = .completed(try AgeVerificationCompleted(from: decoder))
-        case "FAILED":    self = .failed(try AgeVerificationFailed(from: decoder))
-        default:          self = .unknown(status)
+        case "FAILED": self = .failed(try AgeVerificationFailed(from: decoder))
+        default: self = .unknown(status)
         }
     }
 }

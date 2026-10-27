@@ -88,10 +88,10 @@ public enum BankIdNoStatus: Decodable {
         let container = try decoder.container(keyedBy: DiscriminatorKey.self)
         let status = try container.decode(String.self, forKey: .status)
         switch status {
-        case "PENDING":   self = .pending(try BankIdNoPending(from: decoder))
+        case "PENDING": self = .pending(try BankIdNoPending(from: decoder))
         case "COMPLETED": self = .completed(try BankIdNoCompleted(from: decoder))
-        case "FAILED":    self = .failed(try BankIdNoFailed(from: decoder))
-        default:          self = .unknown(status)
+        case "FAILED": self = .failed(try BankIdNoFailed(from: decoder))
+        default: self = .unknown(status)
         }
     }
 }
@@ -195,7 +195,9 @@ public final class BankIdNoEndpoint {
         try await poll({ try await self.signStatus(id: id) }, opts: opts)
     }
 
-    private func poll(_ fn: @escaping () async throws -> BankIdNoStatus, opts: PollOptions) async throws -> BankIdNoStatus {
+    private func poll(_ fn: @escaping () async throws -> BankIdNoStatus, opts: PollOptions) async throws
+        -> BankIdNoStatus
+    {
         let deadline = DispatchTime.now() + opts.timeout
         while true {
             let status = try await fn()

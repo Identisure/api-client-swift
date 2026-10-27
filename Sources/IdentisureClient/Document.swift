@@ -9,7 +9,9 @@ public final class DocumentEndpoint {
     private let transport: Transport
     internal init(_ transport: Transport) { self.transport = transport }
 
-    public func upload(data: Data, filename: String, mimeType: String = "application/pdf") async throws -> DocumentUploadResponse {
+    public func upload(data: Data, filename: String, mimeType: String = "application/pdf") async throws
+        -> DocumentUploadResponse
+    {
         try await transport.postMultipart("/v3/document", data: data, filename: filename, mimeType: mimeType)
     }
 

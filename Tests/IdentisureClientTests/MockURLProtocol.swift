@@ -1,4 +1,5 @@
 import Foundation
+
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
@@ -48,11 +49,16 @@ final class MockURLProtocol: URLProtocol {
         }
 
         guard !Self.queue.isEmpty else {
-            client?.urlProtocol(self, didFailWithError: NSError(domain: "MockURLProtocol", code: 0, userInfo: [NSLocalizedDescriptionKey: "No responses queued"]))
+            client?.urlProtocol(
+                self,
+                didFailWithError: NSError(
+                    domain: "MockURLProtocol", code: 0, userInfo: [NSLocalizedDescriptionKey: "No responses queued"]))
             return
         }
         let item = Self.queue.removeFirst()
-        let response = HTTPURLResponse(url: request.url!, statusCode: item.status, httpVersion: "HTTP/1.1", headerFields: ["Content-Type": "application/json"])!
+        let response = HTTPURLResponse(
+            url: request.url!, statusCode: item.status, httpVersion: "HTTP/1.1",
+            headerFields: ["Content-Type": "application/json"])!
         client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
         client?.urlProtocol(self, didLoad: item.body)
         client?.urlProtocolDidFinishLoading(self)

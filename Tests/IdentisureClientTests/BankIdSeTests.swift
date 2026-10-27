@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import IdentisureClient
 
 final class BankIdSeTests: XCTestCase {
@@ -14,11 +15,13 @@ final class BankIdSeTests: XCTestCase {
     }
 
     func testAuthPending() async throws {
-        MockURLProtocol.enqueue(status: 200, json: [
-            "status": "PENDING",
-            "id": "abc",
-            "autoStartToken": "tok",
-        ])
+        MockURLProtocol.enqueue(
+            status: 200,
+            json: [
+                "status": "PENDING",
+                "id": "abc",
+                "autoStartToken": "tok",
+            ])
 
         let result = try await client.bankIdSe.auth(BankIdSeAuthRequest(ssn: "199001011234"))
         guard case .pending(let pending) = result else { return XCTFail("expected pending") }
@@ -30,15 +33,17 @@ final class BankIdSeTests: XCTestCase {
     }
 
     func testAuthCompleted() async throws {
-        MockURLProtocol.enqueue(status: 200, json: [
-            "status": "COMPLETED",
-            "id": "abc",
-            "ssn": "199001011234",
-            "name": "Test User",
-            "givenName": "Test",
-            "surname": "User",
-            "ocspResponse": "MIIB",
-        ])
+        MockURLProtocol.enqueue(
+            status: 200,
+            json: [
+                "status": "COMPLETED",
+                "id": "abc",
+                "ssn": "199001011234",
+                "name": "Test User",
+                "givenName": "Test",
+                "surname": "User",
+                "ocspResponse": "MIIB",
+            ])
 
         let result = try await client.bankIdSe.auth(BankIdSeAuthRequest())
         guard case .completed(let done) = result else { return XCTFail("expected completed") }
@@ -46,11 +51,13 @@ final class BankIdSeTests: XCTestCase {
     }
 
     func testAuthFailed() async throws {
-        MockURLProtocol.enqueue(status: 200, json: [
-            "status": "FAILED",
-            "id": "abc",
-            "error": "CANCELLED",
-        ])
+        MockURLProtocol.enqueue(
+            status: 200,
+            json: [
+                "status": "FAILED",
+                "id": "abc",
+                "error": "CANCELLED",
+            ])
 
         let result = try await client.bankIdSe.auth(BankIdSeAuthRequest())
         guard case .failed(let failed) = result else { return XCTFail("expected failed") }
@@ -58,25 +65,30 @@ final class BankIdSeTests: XCTestCase {
     }
 
     func testPhoneAuthPending() async throws {
-        MockURLProtocol.enqueue(status: 200, json: [
-            "status": "PENDING",
-            "id": "abc",
-            "hintCode": "outstandingTransaction",
-        ])
+        MockURLProtocol.enqueue(
+            status: 200,
+            json: [
+                "status": "PENDING",
+                "id": "abc",
+                "hintCode": "outstandingTransaction",
+            ])
 
-        let result = try await client.bankIdSe.phoneAuth(BankIdSePhoneAuthRequest(ssn: "199001011234", callInitiator: "USER"))
+        let result = try await client.bankIdSe.phoneAuth(
+            BankIdSePhoneAuthRequest(ssn: "199001011234", callInitiator: "USER"))
         guard case .pending = result else { return XCTFail("expected pending") }
     }
 
     func testVerify() async throws {
-        MockURLProtocol.enqueue(status: 200, json: [
-            "ssn": "199001011234",
-            "name": "Test User",
-            "givenName": "Test",
-            "surname": "User",
-            "age": 34,
-            "verifiedAt": "2026-06-08T10:00:00Z",
-        ])
+        MockURLProtocol.enqueue(
+            status: 200,
+            json: [
+                "ssn": "199001011234",
+                "name": "Test User",
+                "givenName": "Test",
+                "surname": "User",
+                "age": 34,
+                "verifiedAt": "2026-06-08T10:00:00Z",
+            ])
 
         let result = try await client.bankIdSe.verify(BankIdSeVerifyRequest(qrCode: "qr"))
         XCTAssertEqual(result.age, 34)

@@ -160,10 +160,10 @@ public enum BankIdSeStatus: Decodable {
         let container = try decoder.container(keyedBy: DiscriminatorKey.self)
         let status = try container.decode(String.self, forKey: .status)
         switch status {
-        case "PENDING":   self = .pending(try BankIdSePending(from: decoder))
+        case "PENDING": self = .pending(try BankIdSePending(from: decoder))
         case "COMPLETED": self = .completed(try BankIdSeCompleted(from: decoder))
-        case "FAILED":    self = .failed(try BankIdSeFailed(from: decoder))
-        default:          self = .unknown(status)
+        case "FAILED": self = .failed(try BankIdSeFailed(from: decoder))
+        default: self = .unknown(status)
         }
     }
 }
@@ -180,10 +180,10 @@ public enum BankIdSePhoneStatus: Decodable {
         let container = try decoder.container(keyedBy: DiscriminatorKey.self)
         let status = try container.decode(String.self, forKey: .status)
         switch status {
-        case "PENDING":   self = .pending(try BankIdSePendingPhone(from: decoder))
+        case "PENDING": self = .pending(try BankIdSePendingPhone(from: decoder))
         case "COMPLETED": self = .completed(try BankIdSeCompleted(from: decoder))
-        case "FAILED":    self = .failed(try BankIdSeFailed(from: decoder))
-        default:          self = .unknown(status)
+        case "FAILED": self = .failed(try BankIdSeFailed(from: decoder))
+        default: self = .unknown(status)
         }
     }
 }

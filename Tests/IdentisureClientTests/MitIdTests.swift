@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import IdentisureClient
 
 final class MitIdTests: XCTestCase {
@@ -14,12 +15,14 @@ final class MitIdTests: XCTestCase {
     }
 
     func testAuthPending() async throws {
-        MockURLProtocol.enqueue(status: 200, json: [
-            "status": "PENDING",
-            "id": "abc",
-            "url": "https://login",
-            "bindingMessage": "approve this",
-        ])
+        MockURLProtocol.enqueue(
+            status: 200,
+            json: [
+                "status": "PENDING",
+                "id": "abc",
+                "url": "https://login",
+                "bindingMessage": "approve this",
+            ])
 
         let result = try await client.mitId.auth(MitIdAuthRequest())
         guard case .pending(let p) = result else { return XCTFail("expected pending") }
@@ -27,15 +30,17 @@ final class MitIdTests: XCTestCase {
     }
 
     func testSignCompletedWithSignResult() async throws {
-        MockURLProtocol.enqueue(status: 200, json: [
-            "status": "COMPLETED",
-            "id": "abc",
-            "ssn": "1234567890",
-            "name": "Test User",
-            "givenName": "Test",
-            "surname": "User",
-            "signResult": ["checksum": "abc123"],
-        ])
+        MockURLProtocol.enqueue(
+            status: 200,
+            json: [
+                "status": "COMPLETED",
+                "id": "abc",
+                "ssn": "1234567890",
+                "name": "Test User",
+                "givenName": "Test",
+                "surname": "User",
+                "signResult": ["checksum": "abc123"],
+            ])
 
         let result = try await client.mitId.sign(MitIdSignRequest(text: "please sign"))
         if case .completed(let done) = result {

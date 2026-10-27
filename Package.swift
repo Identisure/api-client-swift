@@ -10,16 +10,16 @@ let package = Package(
         .watchOS(.v8),
     ],
     products: [
-        .library(name: "IdentisureClient", targets: ["IdentisureClient"]),
+        .library(name: "IdentisureClient", targets: ["IdentisureClient"])
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-crypto.git", "3.0.0"..<"6.0.0"),
+        .package(url: "https://github.com/apple/swift-crypto.git", "3.0.0"..<"6.0.0")
     ],
     targets: [
         .target(
             name: "IdentisureClient",
             dependencies: [
-                .product(name: "Crypto", package: "swift-crypto", condition: .when(platforms: [.linux])),
+                .product(name: "Crypto", package: "swift-crypto", condition: .when(platforms: [.linux]))
             ],
             path: "swift/Sources/IdentisureClient"
         ),

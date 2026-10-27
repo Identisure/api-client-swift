@@ -1,4 +1,5 @@
 import Foundation
+
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
@@ -56,11 +57,13 @@ internal final class Transport {
         var body = Data()
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
         // WHATWG multipart/form-data encoding, as browsers do, so the quoted value stays intact.
-        let escapedFilename = filename
+        let escapedFilename =
+            filename
             .replacingOccurrences(of: "\"", with: "%22")
             .replacingOccurrences(of: "\r", with: "%0D")
             .replacingOccurrences(of: "\n", with: "%0A")
-        body.append("Content-Disposition: form-data; name=\"file\"; filename=\"\(escapedFilename)\"\r\n".data(using: .utf8)!)
+        body.append(
+            "Content-Disposition: form-data; name=\"file\"; filename=\"\(escapedFilename)\"\r\n".data(using: .utf8)!)
         body.append("Content-Type: \(mimeType)\r\n\r\n".data(using: .utf8)!)
         body.append(data)
         body.append("\r\n--\(boundary)--\r\n".data(using: .utf8)!)
@@ -86,7 +89,7 @@ internal final class Transport {
         do {
             if data.isEmpty {
                 // Caller asked for T but body is empty. Decode an empty object if T allows it,
-                // otherwise this throws — which is the right behaviour for non-optional T.
+                // otherwise this throws, which is the right behaviour for non-optional T.
                 return try decoder.decode(T.self, from: Data("{}".utf8))
             }
             return try decoder.decode(T.self, from: data)
@@ -112,7 +115,8 @@ internal final class Transport {
         guard !(200..<300).contains(http.statusCode) else { return }
         let message: String
         if let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-           let m = json["message"] as? String {
+            let m = json["message"] as? String
+        {
             message = m
         } else {
             message = String(data: data, encoding: .utf8) ?? ""

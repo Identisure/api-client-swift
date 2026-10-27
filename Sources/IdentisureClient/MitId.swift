@@ -82,10 +82,10 @@ public enum MitIdStatus: Decodable {
         let container = try decoder.container(keyedBy: DiscriminatorKey.self)
         let status = try container.decode(String.self, forKey: .status)
         switch status {
-        case "PENDING":   self = .pending(try MitIdPending(from: decoder))
+        case "PENDING": self = .pending(try MitIdPending(from: decoder))
         case "COMPLETED": self = .completed(try MitIdCompleted(from: decoder))
-        case "FAILED":    self = .failed(try MitIdFailed(from: decoder))
-        default:          self = .unknown(status)
+        case "FAILED": self = .failed(try MitIdFailed(from: decoder))
+        default: self = .unknown(status)
         }
     }
 }

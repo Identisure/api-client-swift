@@ -1,4 +1,5 @@
 import Foundation
+
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
@@ -65,7 +66,8 @@ public final class IdentisureClientBuilder {
     public func build() -> IdentisureClient {
         let session = customSession ?? URLSession.shared
         let baseUrl = customBaseUrl ?? env.baseUrl
-        let transport = Transport(session: session, baseUrl: baseUrl, clientId: clientId, clientSecret: clientSecret, timeout: requestTimeout)
+        let transport = Transport(
+            session: session, baseUrl: baseUrl, clientId: clientId, clientSecret: clientSecret, timeout: requestTimeout)
         return IdentisureClient(transport: transport)
     }
 }

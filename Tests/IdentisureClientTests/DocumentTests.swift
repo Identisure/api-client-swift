@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import IdentisureClient
 
 final class DocumentTests: XCTestCase {
@@ -24,7 +25,9 @@ final class DocumentTests: XCTestCase {
 
         let req = MockURLProtocol.capturedRequests.last!
         let contentType = req.value(forHTTPHeaderField: "Content-Type") ?? ""
-        XCTAssertTrue(contentType.hasPrefix("multipart/form-data; boundary="), "Expected multipart content-type, got: \(contentType)")
+        XCTAssertTrue(
+            contentType.hasPrefix("multipart/form-data; boundary="),
+            "Expected multipart content-type, got: \(contentType)")
 
         let bodyString = String(data: MockURLProtocol.capturedBodies.last!, encoding: .utf8) ?? ""
         XCTAssertTrue(bodyString.contains("filename=\"contract.pdf\""), "Body should contain filename")

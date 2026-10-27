@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import IdentisureClient
 
 final class FtnTests: XCTestCase {
@@ -14,11 +15,13 @@ final class FtnTests: XCTestCase {
     }
 
     func testAuthPending() async throws {
-        MockURLProtocol.enqueue(status: 200, json: [
-            "status": "PENDING",
-            "id": "abc",
-            "url": "https://login",
-        ])
+        MockURLProtocol.enqueue(
+            status: 200,
+            json: [
+                "status": "PENDING",
+                "id": "abc",
+                "url": "https://login",
+            ])
 
         let result = try await client.ftn.auth(FtnAuthRequest())
         guard case .pending(let p) = result else { return XCTFail("expected pending") }
@@ -27,10 +30,12 @@ final class FtnTests: XCTestCase {
     }
 
     func testAuthUnknownStatus() async throws {
-        MockURLProtocol.enqueue(status: 200, json: [
-            "status": "SOMETHING_NEW",
-            "id": "abc",
-        ])
+        MockURLProtocol.enqueue(
+            status: 200,
+            json: [
+                "status": "SOMETHING_NEW",
+                "id": "abc",
+            ])
 
         let result = try await client.ftn.authStatus(id: "abc")
         guard case .unknown(let status) = result else { return XCTFail("expected unknown") }
@@ -38,11 +43,13 @@ final class FtnTests: XCTestCase {
     }
 
     func testAgeVerificationCompleted() async throws {
-        MockURLProtocol.enqueue(status: 200, json: [
-            "status": "COMPLETED",
-            "id": "age1",
-            "ageVerified": true,
-        ])
+        MockURLProtocol.enqueue(
+            status: 200,
+            json: [
+                "status": "COMPLETED",
+                "id": "age1",
+                "ageVerified": true,
+            ])
 
         let result = try await client.ftn.ageVerification(AgeVerificationRequest(minAge: 18))
         guard case .completed(let done) = result else { return XCTFail("expected completed") }

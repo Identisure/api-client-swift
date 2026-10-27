@@ -7,7 +7,7 @@ public enum Environment {
     public var baseUrl: String {
         switch self {
         case .production: return "https://api.identisure.com"
-        case .staging:    return "https://stgapi.identisure.com"
+        case .staging: return "https://stgapi.identisure.com"
         }
     }
 }
