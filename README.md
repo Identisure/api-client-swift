@@ -3,14 +3,19 @@
 # Identisure Swift Client
 
 [![Swift Package Manager][spm-image]][spm-url]
+[![Documentation][docs-image]][docs-url]
 [![MIT license][license-image]][license-url]
 
 [spm-image]: https://img.shields.io/badge/SwiftPM-compatible-orange?style=flat-square
 [spm-url]: https://swift.org/package-manager
+[docs-image]: https://img.shields.io/badge/github-docs-orange?logo=github&style=flat-square
+[docs-url]: https://identisure.github.io/api-client-swift
 [license-image]: https://img.shields.io/badge/license-MIT-blue?style=flat-square
 [license-url]: https://opensource.org/license/mit
 
 API client for the [Identisure](https://developers.identisure.com) REST API.
+
+Documentation: [identisure.github.io/api-client-swift](https://identisure.github.io/api-client-swift)
 
 Supports iOS 15+, macOS 12+, tvOS 15+, watchOS 8+.
 
